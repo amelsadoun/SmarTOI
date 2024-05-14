@@ -29,6 +29,9 @@
         "projectId": "7857817b-a95f-41bd-a4a0-8c00b627a8d2"
       }
     },
-    "owner": "placeboplacebo"
+    "owner": "placeboplacebo",
+    "plugins": [
+      "expo-font"
+    ]
   }
 }
