@@ -2,83 +2,62 @@ import * as SQLite from "expo-sqlite";
 //import publishMessage from "./hard/hardpub";
 
 // Open or create the database
-const db = SQLite.openDatabase("devices.db");
+const db = SQLite.openDatabaseSync('devices.db');
 
 // Initialize database table
-export const init = () => {
-  return new Promise((resolve, reject) => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        `CREATE TABLE IF NOT EXISTS devices (
-                    id INTEGER PRIMARY KEY NOT NULL,
-                    deviceName TEXT NOT NULL,
-                    deviceType TEXT NOT NULL,
-                    deviceStatus TEXT NOT NULL
-                )`,
-        [],
-        () => resolve(),
-        (_, error) => reject(error)
+export const init = async () => {
+  try {
+    // Open the database
+    await db.execAsync(`
+      PRAGMA journal_mode = WAL;
+      CREATE TABLE IF NOT EXISTS devices (
+        id INTEGER PRIMARY KEY NOT NULL,
+        deviceName TEXT NOT NULL,
+        deviceType TEXT NOT NULL,
+        deviceStatus TEXT NOT NULL
       );
-    });
-  });
+    `);
+    console.log('Database initialized successfully');
+  } catch (error) {
+    console.error('Error initializing database:', error);
+  }
 };
 
-export const addDevice = (deviceName, deviceType, deviceStatus) => {
-  return new Promise((resolve, reject) => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "INSERT INTO devices (deviceName, deviceType, deviceStatus) VALUES (?, ?, ?)",
-        [deviceName, deviceType, deviceStatus],
-        (_, { insertId }) => resolve(insertId),
-        (_, error) => reject(error)
-      );
-    });
-  });
+export const addDevice = async (deviceName, deviceType, deviceStatus) => {
+  try {
+    await db.runAsync(
+      'INSERT INTO devices (deviceName, deviceType, deviceStatus) VALUES (?, ?, ?)',
+      deviceName,
+      deviceType,
+      deviceStatus
+    );
+    console.log('Device added successfully');
+  } catch (error) {
+    console.error('Error adding device:', error);
+  }
 };
 
 // Fetch all devices
-export const fetchDevices = () => {
-  return new Promise((resolve, reject) => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "SELECT * FROM devices",
-        [],
-        (_, { rows }) => resolve(rows._array),
-        (_, error) => reject(error)
-      );
-    });
-  });
+export const fetchDevices = async () => {
+  try {
+    const result = await db.getAllAsync('SELECT * FROM devices');
+    return result;
+  } catch (error) {
+    console.error('Error fetching devices:', error);
+    return [];
+  }
 };
 
 // Delete a device
-export const deleteDevice = (id) => {
-  return new Promise((resolve, reject) => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "DELETE FROM devices WHERE id = ?",
-        [id],
-        (_, { rowsAffected }) => resolve(rowsAffected),
-        (_, error) => reject(error)
-      );
-    });
-  });
+export const deleteDevice = async (id) => {
+  try {
+    await db.runAsync('DELETE FROM devices WHERE id = ?', id);
+    console.log('Device deleted successfully');
+  } catch (error) {
+    console.error('Error deleting device:', error);
+  }
 };
 
-// Update a device
-export const updateDevice = (deviceName, deviceType, deviceStatus, id) => {
-  return new Promise((resolve, reject) => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "UPDATE devices SET deviceName = ?, deviceType = ?, deviceStatus = ? WHERE id = ?",
-        [deviceName, deviceType, deviceStatus, id],
-        console.log(deviceName + " in index: " + deviceStatus),
-      //  publishMessage(deviceName, deviceStatus == "On" ? "1" : "0"),
-        (_, { rowsAffected }) => resolve(rowsAffected),
-        (_, error) => reject(error)
-      );
-    });
-  });
-};
 
 // Remove all devices
 const removeAllDevices = () => {

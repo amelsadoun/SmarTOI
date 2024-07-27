@@ -5,7 +5,7 @@ import StartScreen from "../screens/StartScreen";
 
 const FirstStack = createNativeStackNavigator();
 
-export default function AuthentificationNav() {
+export default function StartNav() {
   return (
     <FirstStack.Navigator
       initialRouteName="Start screen"

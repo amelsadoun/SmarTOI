@@ -25,7 +25,7 @@ export default function HomeScreen({ navigation }) {
 
   init()
     .then(() => {
-      // console.log("Database initialized successfully");
+      console.log("Database initialized successfully");
     })
     .catch((error) => {
       console.error("Error initializing database:", error);
@@ -34,6 +34,7 @@ export default function HomeScreen({ navigation }) {
   useEffect(() => {
     const fetchAndSetDevices = async () => {
       try {
+        console.log("Devices succefully fetched")
         const fetchedDevices = await fetchDevices();
         setDevices(fetchedDevices);
       } catch (error) {

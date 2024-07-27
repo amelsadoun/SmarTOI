@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Dimensions,
+  Text,
 } from "react-native";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import CarouselCardItem, {

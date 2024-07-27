@@ -1,11 +1,9 @@
 import { SafeAreaView, Pressable, Text, LogBox } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
-const white = "#FEFEFF";
-const darkBlue = "#2F4062";
-const yellow = "#F3F0A6";
 import { useFonts } from "expo-font";
 import Fonts from "../components/Fonts";
 import PreviewCarousel from "../components/PreviewCarousel";
+import { colors } from "../assets/colors";
 
 export default function PreviewScreen({ navigation }) {
   const [fontsLoaded] = useFonts(Fonts);
@@ -21,7 +19,7 @@ export default function PreviewScreen({ navigation }) {
         backgroundColor: "#fff",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: darkBlue,
+        backgroundColor: colors.darkBlue,
       }}
     >
       <PreviewCarousel navigation={navigation} />

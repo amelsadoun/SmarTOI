@@ -13,6 +13,7 @@ import Fonts from "../components/Fonts";
 import { colors } from "../assets/colors";
 import { deleteDevice, fetchDevices, updateDevice } from "../helpers";
 import { useTheme } from "../contexts/ThemeContext";
+import BackIcon from "../icons/Back";
 // import { getIPAddress } from "../helpers/NetInfo";
 // import publicIP from 'react-native-public-ip';
 
@@ -91,6 +92,21 @@ const DeviceInfoScreen = ({ navigation, route }) => {
 
   return (
     <BackScreen>
+      <Pressable
+        style={{
+          width: 40,
+          height: 40,
+          display: "flex",
+          alignContent: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          alignItems: "center",
+          marginHorizontal: 25,
+        }}
+        onPress={() => navigation.goBack()}
+      >
+        <BackIcon color={isDarkMode? "white": "black"}></BackIcon>
+      </Pressable>
       <View
         style={{
           display: "flex",
@@ -137,7 +153,7 @@ const DeviceInfoScreen = ({ navigation, route }) => {
             <Text
               style={{
                 fontFamily: "MontserratBold",
-                color: "green",
+                color: status === "On" ? "green" : "red",
                 fontSize: 20,
               }}
             >
@@ -171,13 +187,14 @@ const DeviceInfoScreen = ({ navigation, route }) => {
             alignItems: "center",
             alignContent: "center",
             justifyContent: "center",
+            paddingBottom: 15,
           }}
         >
           <Text
             style={{
               fontFamily: "MontserratSemiBold",
               fontSize: 20,
-              color: isDarkMode ? colors.white : "black",
+              color: colors.white,
             }}
           >
             remove
